@@ -6,6 +6,7 @@ import csv
 fil = Path(__file__).parent / "Befolkning.csv"
 xverdier = []
 yverdier = []
+
 with open(fil, encoding = "utf-8-sig") as f:
     i = 0
     next(f)
