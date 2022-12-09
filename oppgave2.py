@@ -1,8 +1,9 @@
 import json         #Importerer Json for å lese filen
 import matplotlib .pyplot as plt            #Importerer Matplotlib.pyplot for å fremstille data
+from pathlib import Path
 
-
-json_data = open('Sivilstand.json')         #Åpner filen "Sivilstand.json
+fil = Path(__file__).parent / "Sivilstand.json"
+json_data = open(fil)         #Åpner filen "Sivilstand.json
 json_load = json.load(json_data)            #Laster inn dataen       
 
 input = json_load["dataset"]["dimension"]["Tid"]["category"]["index"].keys()        #Finner frem til årstall
