@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from pathlib import Path
 import csv
 
@@ -19,13 +18,14 @@ class csvTilgraf:
         overskrifter (list) = navnet til y- og x-aksen
         tittel (str) = tittelen til grafen
     """
-    def __init__(self, filnavn:str, tegnsett:str = "utf-8-sig"):
+    def __init__(self, filnavn:str, tegnsett:str = "utf-8-sig", skilletegn:str = ";", overskrifter:list = False, tittel:str = False):
         self.fil = Path(__file__).parent / filnavn
         self.xverdier = []
         self.yverdier = []
         self.tegnsett = tegnsett
-        self.overskrifter = []
-        self.tittel = ""
+        self.skilletegn = skilletegn
+        self.overskrifter = overskrifter
+        self.tittel = tittel
     
     def klargjør(self):
         """
@@ -35,29 +35,29 @@ class csvTilgraf:
             self.tittel = f.readlines(1)[0] # Tar første linje i dataen og gjør om til tittel
             self.tittel = self.tittel.replace('"','') # Tar vekk " fra stringen
             for line in f:
-                line = line.rstrip().split(";") 
+                line = line.rstrip().split(self.skilletegn) 
                 if len(line) == 2: # sjekker om linjen har to variabler etter den ble splittet tidligere
                     self.overskrifter = line # Gjør om linjen til overskrift
                     self.overskrifter = [i.replace('"','') for i in self.overskrifter] # tar vekk "
                     break # bryter loopen siden vi vil bare ha overskriften
 
-            filInnhold = csv.reader(f, delimiter=";") # Gjør det enklere for å appende til x-verdi og y-verdi listen
+            filInnhold = csv.reader(f, delimiter=self.skilletegn) # Gjør det enklere for å appende til x-verdi og y-verdi listen
             for rad in filInnhold:
-                self.xverdier.append(int(rad[0]))
-                self.yverdier.append(int(rad[1]))
+                self.xverdier.append(int(rad[0])) # appender xverdier
+                self.yverdier.append(int(rad[1])) # appender yverdier
 
     def lagGraf(self):
         """
-        lager grafen
+        lager grafen (Denne burde brukes hvis man skal plotte flere grafer)
         """
-
-        plt.plot(self.xverdier, self.yverdier, color = 'blue', linestyle = '--') #plotter
+        self.klargjør() # utfører denne funksjonen først
+        plt.plot(self.xverdier, self.yverdier, color = 'blue', linestyle = '--', label = self.overskrifter[1]) # plotter
     
     def finGraf(self):
         """
         Legger til tittel, akse-tittler og grid til grafen
         """
-        self.lagGraf()
+        self.lagGraf() # utfører denne funksjonen først
         plt.title(self.tittel)     # tittel
         plt.xlabel(self.overskrifter[0])     # x-aksetittel
         plt.ylabel(self.overskrifter[1])     # y-aksetittel
@@ -67,10 +67,8 @@ class csvTilgraf:
         """
         viser grafen
         """
-        self.finGraf()
-        plt.show()
-        
+        self.finGraf() # utfører denne funksjonen først
+        plt.show() # Viser grafen
 
-graf = csvTilgraf("Befolkning.csv")
-graf.klargjør()
-graf.tegnGraf()
+#graf = csvTilgraf(fil) #utfører oppgaven, men ikke import med dette aktivert
+#graf.tegnGraf() # utfører oppgaven, men ikke import med dette aktivert
