@@ -1,6 +1,7 @@
 import json         #Importerer Json for å lese filen
 import matplotlib .pyplot as plt            #Importerer Matplotlib.pyplot for å fremstille data
 from pathlib import Path
+import oppgave1 as opg1
 
 fil = Path(__file__).parent / "Sivilstand.json"
 json_data = open(fil)         #Åpner filen "Sivilstand.json
@@ -23,7 +24,10 @@ plt.plot(xaxis,yaxis2, label='gift')        #Plotter andre intervall med grafnav
 plt.plot(xaxis,yaxis3, label='Enke/Enkemann')       #Plotter tredje intervall med grafnavn: "Enke/Enkemann"
 plt.plot(xaxis,yaxis4, label='Separert')        #Plotter fjerde intervall med grafnavn: "Separert"
 plt.plot(xaxis,yaxis5, label='Skilt')       #Plotter femte intervall med grafnavn: "Skilt"
+grafoppgave1 = opg1.csvTilgraf("Befolkning.csv") # bruker klasse fra oppgave 1
+grafoppgave1.lagGraf() # lager grafen fra oppgave 1
 
 plt.legend()
 
 plt.show()      #Viser grafen
+
